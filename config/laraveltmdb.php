@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'foo' => 'bar',
+    'key' => env('TMDB_API_KEY'),
 ];

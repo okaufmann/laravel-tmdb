@@ -17,14 +17,14 @@ use Illuminate\Contracts\Config\Repository;
  *
  * @author {{ author }}
  */
-class DummyClass
+class LaravelTmdb
 {
     /**
      * Foo.
      *
      * @var string
      */
-    protected $foo;
+    protected $apiKey;
 
     /**
      * Config repository.
@@ -42,7 +42,7 @@ class DummyClass
      */
     public function __construct(Repository $config)
     {
-        $this->foo = array_get($config, 'foo', 'bar');
+        $this->apt_key = array_get($config, 'key');
     }
 
     /**
@@ -50,8 +50,8 @@ class DummyClass
      *
      * @return string
      */
-    public function getFoo()
+    public function getApiKey()
     {
-        return $this->foo;
+        return $this->apiKey;
     }
 }

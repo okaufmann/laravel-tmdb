@@ -10,7 +10,7 @@ use Okaufmann\Tests\LaravelTmdb\AbstractTestCase;
  *
  * @author {{ author }}
  */
-class DummyClassTest extends AbstractTestCase
+class LaravelTmdbTest extends AbstractTestCase
 {
     use FacadeTrait;
     /**
@@ -38,6 +38,6 @@ class DummyClassTest extends AbstractTestCase
      */
     protected function getFacadeRoot()
     {
-        return \Okaufmann\LaravelTmdb\DummyClass::class;
+        return \Okaufmann\LaravelTmdb\LaravelTmdb::class;
     }
 }

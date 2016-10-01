@@ -62,7 +62,7 @@ class LaravelTmdbServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerDummyClass();
+        // $this->registerDummyClass();
     }
 
     /**
@@ -73,9 +73,9 @@ class LaravelTmdbServiceProvider extends ServiceProvider
     protected function registerDummyClass()
     {
         $this->app->singleton('laraveltmdb.dummyclass', function (Container $app) {
-            return new DummyClass($app['config']);
+            return new LaravelTmdb($app['config']);
         });
-        $this->app->alias('laraveltmdb.dummyclass', DummyClass::class);
+        $this->app->alias('laraveltmdb.laraveltmdb', LaravelTmdb::class);
     }
 
     /**
@@ -85,6 +85,6 @@ class LaravelTmdbServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['laraveltmdb.dummyclass'];
+        return ['laraveltmdb.laraveltmdb'];
     }
 }

@@ -10,24 +10,24 @@
 
 namespace Okaufmann\Tests\LaravelTmdb;
 
-use Okaufmann\LaravelTmdb\DummyClass;
+use Okaufmann\LaravelTmdb\LaravelTmdb;
 
 /**
  * This is the dummy test class.
  *
  * @author {{ author }}
  */
-class DummyClassTest extends AbstractTestCase
+class LaravelTmdbTest extends AbstractTestCase
 {
     public function testConstruct()
     {
-        $dummy = new DummyClass($this->app['config']);
-        $this->assertInstanceOf(DummyClass::class, $dummy);
+        $dummy = new LaravelTmdb($this->app['config']);
+        $this->assertInstanceOf(LaravelTmdb::class, $dummy);
     }
 
     public function testGetFoo()
     {
-        $dummy = new DummyClass($this->app['config']);
-        $this->assertSame('bar', $dummy->getFoo());
+        $dummy = new LaravelTmdb($this->app['config']);
+        $this->assertSame('bar', $dummy->getApiKey());
     }
 }

@@ -11,7 +11,7 @@
 namespace Okaufmann\Tests\LaravelTmdb;
 
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
-use Okaufmann\LaravelTmdb\DummyClass;
+use Okaufmann\LaravelTmdb\LaravelTmdb;
 
 /**
  * This is the service provider test class.
@@ -24,6 +24,6 @@ class ServiceProviderTest extends AbstractTestCase
 
     public function testDummyClassIsInjectable()
     {
-        $this->assertIsInjectable(DummyClass::class);
+        $this->assertIsInjectable(LaravelTmdb::class);
     }
 }
