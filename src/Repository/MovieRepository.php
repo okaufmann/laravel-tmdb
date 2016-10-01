@@ -57,7 +57,6 @@ class MovieRepository extends AbstractRepository
      */
     public function load($id, array $parameters = [], array $headers = [])
     {
-
         if (empty($parameters)) {
             $parameters = [
                 new AppendToResponse([

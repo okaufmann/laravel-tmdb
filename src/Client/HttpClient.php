@@ -174,7 +174,7 @@ class HttpClient
                 throw new RuntimeException(sprintf('Unkown request method "%s".', $request->getMethod()));
         }
 
-        return $response;
+        return $response->getBody();
     }
 
     /**

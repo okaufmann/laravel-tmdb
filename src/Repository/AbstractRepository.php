@@ -56,10 +56,10 @@ abstract class AbstractRepository
     protected function parseQueryParameters(array $parameters = [])
     {
         foreach ($parameters as $key => $candidate) {
-            if (is_a($candidate, 'Tmdb\Model\Common\QueryParameter\QueryParameterInterface')) {
+            if (is_a($candidate, 'Okaufmann\LaravelTmdb\Model\Common\QueryParameter\QueryParameterInterface')) {
                 $interfaces = class_implements($candidate);
 
-                if (array_key_exists('Tmdb\Model\Common\QueryParameter\QueryParameterInterface', $interfaces)) {
+                if (array_key_exists('Okaufmann\LaravelTmdb\Model\Common\QueryParameter\QueryParameterInterface', $interfaces)) {
                     unset($parameters[$key]);
 
                     $parameters[$candidate->getKey()] = $candidate->getValue();
