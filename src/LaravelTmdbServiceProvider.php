@@ -27,7 +27,7 @@ class LaravelTmdbServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
 
     /**
      * Boot the service provider.
@@ -62,7 +62,7 @@ class LaravelTmdbServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // $this->registerDummyClass();
+        $this->registerLaravelTmdb();
     }
 
     /**
@@ -70,9 +70,9 @@ class LaravelTmdbServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerDummyClass()
+    protected function registerLaravelTmdb()
     {
-        $this->app->singleton('laraveltmdb.dummyclass', function (Container $app) {
+        $this->app->singleton('laraveltmdb.laraveltmdb', function (Container $app) {
             return new LaravelTmdb($app['config']);
         });
         $this->app->alias('laraveltmdb.laraveltmdb', LaravelTmdb::class);

@@ -1,0 +1,305 @@
+<?php
+/**
+ * This file is part of the Tmdb PHP API created by Michael Roterman.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package Tmdb
+ * @author Michael Roterman <michael@wtfz.net>
+ * @copyright (c) 2013, Michael Roterman
+ * @version 0.0.1
+ */
+namespace Okaufmann\LaravelTmdb\Repository;
+
+use Okaufmann\LaravelTmdb\Factory\TvFactory;
+use Okaufmann\LaravelTmdb\Model\Collection\Videos;
+use Okaufmann\LaravelTmdb\Model\Common\AccountStates;
+use Okaufmann\LaravelTmdb\Model\Common\GenericCollection;
+use Okaufmann\LaravelTmdb\Model\Common\Video;
+use Okaufmann\LaravelTmdb\Model\Lists\Result;
+use Okaufmann\LaravelTmdb\Model\Tv;
+use Okaufmann\LaravelTmdb\Model\Tv\QueryParameter\AppendToResponse;
+
+/**
+ * Class TvRepository
+ * @package Tmdb\Repository
+ * @see http://docs.themoviedb.apiary.io/#tv
+ */
+class TvRepository extends AbstractRepository
+{
+    /**
+     * Load a tv with the given identifier
+     *
+     * If you want to optimize the result set/bandwidth you should
+     * define the AppendToResponse parameter
+     *
+     * @param  integer                        $id
+     * @param $parameters
+     * @param $headers
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function load($id, array $parameters = [], array $headers = [])
+    {
+
+        if (empty($parameters)) {
+            $parameters = [
+                new AppendToResponse([
+                    AppendToResponse::CREDITS,
+                    AppendToResponse::EXTERNAL_IDS,
+                    AppendToResponse::IMAGES,
+                    AppendToResponse::TRANSLATIONS,
+                    AppendToResponse::SIMILAR,
+                    AppendToResponse::KEYWORDS,
+                    AppendToResponse::CHANGES,
+                    AppendToResponse::CONTENT_RATINGS,
+                    AppendToResponse::ALTERNATIVE_TITLES,
+                    AppendToResponse::VIDEOS,
+                ])
+            ];
+        }
+
+        $data = $this->getApi()->getTvshow($id, $this->parseQueryParameters($parameters), $headers);
+
+        return $this->getFactory()->create($data);
+    }
+
+    /**
+     * Get the cast & crew information about a TV series.
+     *
+     * Just like the website, we pull this information from the last season of the series.
+     *
+     * @param $id
+     * @param $parameters
+     * @param $headers
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function getCredits($id, array $parameters = [], array $headers = [])
+    {
+        $data = $this->getApi()->getCredits($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['credits' => $data]);
+
+        return $tv->getCredits();
+    }
+
+    /**
+     * Get the content ratings for a specific TV show id.
+     *
+     * @param $id
+     * @param $parameters
+     * @param  $headers
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function getContentRatings($id, array $parameters = array(), array $headers = array())
+    {
+        $data = $this->getApi()->getContentRatings($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['content_ratings' => $data]);
+
+        return $tv->getContentRatings();
+    }
+
+    /**
+     * Get the external ids that we have stored for a TV series.
+     *
+     * @param $id
+     * @param $parameters
+     * @param $headers
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function getExternalIds($id, array $parameters = [], array $headers = [])
+    {
+        $data = $this->getApi()->getExternalIds($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['external_ids' => $data]);
+
+        return $tv->getExternalIds();
+    }
+
+    /**
+     * Get the images (posters and backdrops) for a TV series.
+     *
+     * @param $id
+     * @param $parameters
+     * @param $headers
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function getImages($id, array $parameters = [], array $headers = [])
+    {
+        $data = $this->getApi()->getImages($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['images' => $data]);
+
+        return $tv->getImages();
+    }
+
+    /**
+     * Get the list of translations that exist for a TV series.
+     *
+     * These translations cascade down to the episode level.
+     *
+     * @param $id
+     * @param $parameters
+     * @param $headers
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function getTranslations($id, array $parameters = [], array $headers = [])
+    {
+        $data = $this->getApi()->getTranslations($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['translations' => $data]);
+
+        return $tv->getTranslations();
+    }
+
+    /**
+     * Get the images (posters and backdrops) for a TV series.
+     *
+     * @param $id
+     * @param $parameters
+     * @param $headers
+     * @return Videos|Video[]
+     */
+    public function getVideos($id, array $parameters = [], array $headers = [])
+    {
+        $data = $this->getApi()->getVideos($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['videos' => $data]);
+
+        return $tv->getVideos();
+    }
+
+    /**
+     * Get the alternative titles for a specific show ID.
+     *
+     * @param $id
+     * @param $parameters
+     * @param $headers
+     * @return GenericCollection|Tv\AlternativeTitle[]
+     */
+    public function getAlternativeTitles($id, array $parameters = [], array $headers = [])
+    {
+        $data = $this->getApi()->getAlternativeTitles($id, $this->parseQueryParameters($parameters), $headers);
+        $tv   = $this->getFactory()->create(['alternative_titles' => $data]);
+
+        return $tv->getAlternativeTitles();
+    }
+
+    /**
+     * Return the Tvs API Class
+     *
+     * @return \Okaufmann\LaravelTmdb\Api\Tv
+     */
+    public function getApi()
+    {
+        return $this->getClient()->getTvApi();
+    }
+
+    /**
+     * @return TvFactory
+     */
+    public function getFactory()
+    {
+        return new TvFactory($this->getClient()->getHttpClient());
+    }
+
+    /**
+     * Get the list of popular tvs on The Tv Database. This list refreshes every day.
+     *
+     * @param  array $options
+     * @param  array $headers
+     * @return Tv[]
+     */
+    public function getPopular(array $options = [], array $headers = [])
+    {
+        return $this->getFactory()->createResultCollection(
+            $this->getApi()->getPopular($options, $headers)
+        );
+    }
+
+    /**
+     * Get the list of top rated tvs. By default, this list will only include tvs that have 10 or more votes.
+     * This list refreshes every day.
+     *
+     * @param  array $options
+     * @param  array $headers
+     * @return Tv[]
+     */
+    public function getTopRated(array $options = [], array $headers = [])
+    {
+        return $this->getFactory()->createResultCollection(
+            $this->getApi()->getTopRated($options, $headers)
+        );
+    }
+
+    /**
+     * Get the list of top rated tvs. By default, this list will only include tvs that have 10 or more votes.
+     * This list refreshes every day.
+     *
+     * @param  array $options
+     * @param  array $headers
+     * @return Tv[]
+     */
+    public function getOnTheAir(array $options = [], array $headers = [])
+    {
+        return $this->getFactory()->createResultCollection(
+            $this->getApi()->getOnTheAir($options, $headers)
+        );
+    }
+
+    /**
+     * Get the list of TV shows that air today.
+     *
+     * Without a specified timezone, this query defaults to EST (Eastern Time UTC-05:00).
+     *
+     * @param  array $options
+     * @param  array $headers
+     * @return Tv[]
+     */
+    public function getAiringToday(array $options = [], array $headers = [])
+    {
+        return $this->getFactory()->createResultCollection(
+            $this->getApi()->getAiringToday($options, $headers)
+        );
+    }
+
+    /**
+     * Get the latest tv-show.
+     *
+     * @param  array                          $options
+     * @return null|\Okaufmann\LaravelTmdb\Model\AbstractModel
+     */
+    public function getLatest(array $options = [])
+    {
+        return $this->getFactory()->create(
+            $this->getApi()->getLatest($options)
+        );
+    }
+
+    /**
+     * This method lets users get the status of whether or not the TV show has been rated
+     * or added to their favourite or watch lists.
+     *
+     * A valid session id is required.
+     *
+     * @param  integer       $id
+     * @return AccountStates
+     */
+    public function getAccountStates($id)
+    {
+        return $this->getFactory()->createAccountStates(
+            $this->getApi()->getAccountStates($id)
+        );
+    }
+
+    /**
+     * This method lets users rate a TV show.
+     *
+     * A valid session id or guest session id is required.
+     *
+     * @param  integer $id
+     * @param  float   $rating
+     * @return Result
+     */
+    public function rate($id, $rating)
+    {
+        return $this->getFactory()->createResult(
+            $this->getApi()->rateTvShow($id, $rating)
+        );
+    }
+}
