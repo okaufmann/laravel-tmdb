@@ -145,6 +145,11 @@ class Tv extends AbstractModel
     private $status;
 
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
      * @var float
      */
     private $voteAverage;
@@ -246,6 +251,7 @@ class Tv extends AbstractModel
         'popularity',
         'poster_path',
         'status',
+        'type',
         'vote_average',
         'vote_count',
     ];
@@ -719,6 +725,22 @@ class Tv extends AbstractModel
     }
 
     /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * @param  float $voteAverage
      * @return $this
      */
@@ -983,4 +1005,5 @@ class Tv extends AbstractModel
     {
         return $this->alternativeTitles;
     }
+
 }
