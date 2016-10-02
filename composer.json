@@ -1,10 +1,15 @@
 {
   "name": "okaufmann/laravel-tmdb",
-  "description": "",
-  "keywords": [],
-  "license": "",
+  "description": "PHP wrapper for TMDB (TheMovieDatabase) API v3. Supports two types of approaches, one modelled with repositories, models and factories. And the other by simple array access to RAW data from The Movie Database.",
+  "keywords": ["tmdb", "api", "php", "wrapper", "movie", "tv", "tv show", "tvdb"],,
+  "license": "MIT",
   "type": "library",
   "authors": [
+    {
+      "name": "Michael Roterman",
+      "homepage": "http://wtfz.net",
+      "email": "michael@wtfz.net"
+    },
     {
       "name": "Oliver Kaufmann",
       "email": "okaufmann91@gmail.com"
